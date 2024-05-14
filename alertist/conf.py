@@ -13,11 +13,6 @@ class Singleton(type):
 
 
 class Config(metaclass=Singleton):
-    # _KEYS = [
-    #     "PUSHOVER_USER",
-    #     "PUSHOVER_API_TOKEN",
-    # ]
-
     def __init__(self):
         import alertist.targets
 
