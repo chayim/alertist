@@ -3,6 +3,8 @@ from ..conf import Config
 
 
 class ABCTarget(ABC):
+    CONFIG_KEYS = []
+
     def __init__(self):
         self.validate_configuration()
 

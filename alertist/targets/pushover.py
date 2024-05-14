@@ -1,7 +1,6 @@
 from ..conf import Config
 import httpx
 from .abstract import ABCTarget
-from typing import Optional
 
 
 class Pushover(ABCTarget):

@@ -1,5 +1,6 @@
 from .conf import Config
 from typing import Optional, List
+import alertist.targets
 from .targets.abstract import ABCTarget
 import os
 
@@ -10,19 +11,20 @@ class Alertist:
     def __init__(
         self,
         alert: Optional[ABCTarget] = None,
-        # alerts: Optional[List[ABCTarget]] = None,
+        alerts: Optional[List[ABCTarget]] = None,
     ) -> None:
         Config()
         if alert is not None:
             self.ALERTS = [alert]
-        # TODO support for multiple
-        # elif alerts is not None:
-        #     self.ALERTS = alerts
-        # else:
-        #     pass
-        # TODO dynamic alerts here, this is a placeholder
-        # keys = os.getenv("ALERTS", "").split(",")
-        # self.ALERTS = keys
+        elif alerts is not None:
+            self.ALERTS = alerts
+        else:
+            keys = os.getenv("ALERTS", "").split(",")
+            self.ALERTS = []
+            for k in keys:
+                klass = getattr(alertist.targets, k, None)
+                if klass is not None:
+                    self.ALERTS.append(klass)
 
         if len(self.ALERTS) == 0:
             raise ValueError("Configure an alert target")
