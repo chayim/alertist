@@ -1,0 +1,34 @@
+---
+
+name: Integration
+
+on:
+    pull_request:
+    push:
+      paths-ignore:
+        - *.md'
+        - 'docs/**'
+      branches:
+        - main
+        - master
+        - '[0-9].[0-9]'
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: install python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+
+      - name: install poetry and dependencies
+        run: |
+          pip install poetry
+          poetry install
+          poetry build
+
+      - name: run tests
+        run: |
+          poetry run pytest
